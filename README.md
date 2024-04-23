@@ -1,5 +1,7 @@
 # Hash Set with Union Find capabilities
 
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSuppieRK%2Funion-find.svg?type=shield&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2FSuppieRK%2Funion-find?ref=badge_shield&issueType=license)
+
 This dependency-less library serves for one simple purpose: provide an implementation of a data structure with Union-Find algorithm capabilities.
 
 ## How to add
@@ -30,3 +32,7 @@ dependencies {
 
 - [JGraphT implementation](https://github.com/jgrapht/jgrapht/blob/master/jgrapht-core/src/main/java/org/jgrapht/alg/util/UnionFind.java)
 - [Partition implementation](https://github.com/gstamatelat/partition/blob/master/src/main/java/gr/james/partition/UnionFindPartition.java)
+
+## FOSSA report
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSuppieRK%2Funion-find.svg?type=large&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2FSuppieRK%2Funion-find?ref=badge_large&issueType=license)
