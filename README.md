@@ -22,6 +22,8 @@ Some of the practical applications are:
 public class Example {
   public static void main(String[] args) {
     HashUnionFindSet<Character, String> hufs =
+        // Note the function - it defines initial disjoint set for the value
+        // Function itself cannot be null, as well as its return value
         new HashUnionFindSet<>(s -> Character.toLowerCase(s.charAt(0)));
 
     // Let's define our fruits
@@ -34,13 +36,13 @@ public class Example {
     hufs.add(apple);
     hufs.add(banana);
     System.out.printf(
-        "%s and %s connected? - %s%n", 
+        "Are %s and %s connected? - %s%n", 
         apple, banana, hufs.connected(apple, banana));
 
     // Apricot will join the same set as Apple
     hufs.add(apricot);
     System.out.printf(
-        "%s and %s connected? - %s%n", 
+        "Are %s and %s connected? - %s%n", 
         apple, apricot, hufs.connected(apple, apricot));
 
     // Let's check our state
@@ -94,8 +96,8 @@ public class Example {
 which will produce the following output:
 
 ```
-Apple and Banana connected? - false
-Apple and Apricot connected? - true
+Are Apple and Banana connected? - false
+Are Apple and Apricot connected? - true
 
 There are 2 disjoint sets
 Apple and Apricot belong to the set 'a' of size 2
