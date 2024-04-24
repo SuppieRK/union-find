@@ -79,6 +79,15 @@ public interface UnionFind<R, E> {
   R find(E e);
 
   /**
+   * Checks whether a representative value has been assigned to a set in the disjoint set data
+   * structure.
+   *
+   * @param r the representative value to check
+   * @return true if the representative value exists in the disjoint set, false otherwise
+   */
+  boolean hasRepresentative(R r);
+
+  /**
    * @return the number of sets in the disjoint set data structure
    */
   int numberOfSets();

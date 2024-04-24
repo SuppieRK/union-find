@@ -999,6 +999,17 @@ class HashUnionFindSetTest {
   }
 
   @Test
+  void hasRepresentative() {
+    HashUnionFindSet<Integer, Integer> hufs = new HashUnionFindSet<>(Function.identity());
+    hufs.add(1);
+
+    assertTrue(hufs.hasRepresentative(1), "Created element must result in existing representative");
+
+    hufs.remove(1);
+    assertFalse(hufs.hasRepresentative(1), "Removed element must result in missing representative");
+  }
+
+  @Test
   void numberOfSets() {
     HashUnionFindSet<Integer, Integer> hufs = new HashUnionFindSet<>(Function.identity());
     hufs.add(1);

@@ -247,6 +247,12 @@ public class HashUnionFindSet<R, E> extends AbstractSet<E>
 
   /** {@inheritDoc} */
   @Override
+  public boolean hasRepresentative(R r) {
+    return representatives.containsKey(r);
+  }
+
+  /** {@inheritDoc} */
+  @Override
   public int numberOfSets() {
     int count = 0;
     for (Representative<R, E> rep : representatives.values()) {
