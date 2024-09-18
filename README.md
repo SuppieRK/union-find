@@ -1,8 +1,10 @@
 # Hash Set with Union Find capabilities
 
+This dependency-less library serves for one simple purpose: provide an implementation of a data structure with Union-Find algorithm capabilities.
+
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSuppieRK%2Funion-find.svg?type=shield&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2FSuppieRK%2Funion-find?ref=badge_shield&issueType=license)
 
-This dependency-less library serves for one simple purpose: provide an implementation of a data structure with Union-Find algorithm capabilities.
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-orange.svg)](https://sonarcloud.io/summary/overall?id=SuppieRK_union-find)
 
 ## Where can this be useful?
 
