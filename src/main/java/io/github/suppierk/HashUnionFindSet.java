@@ -267,7 +267,7 @@ public class HashUnionFindSet<R, E> extends AbstractSet<E>
   @Override
   public int representativeSetSize(R r) {
     if (!representatives.containsKey(r)) {
-      throw new NoSuchElementException("No such representative with value '%s'".formatted(r));
+      throw new NoSuchElementException("No such representative with value '" + r + "'");
     }
 
     Representative<R, E> curr = representatives.get(r);
@@ -282,7 +282,7 @@ public class HashUnionFindSet<R, E> extends AbstractSet<E>
   @Override
   public Set<E> representativeSet(R r) {
     if (!representatives.containsKey(r)) {
-      throw new NoSuchElementException("No such representative with value '%s'".formatted(r));
+      throw new NoSuchElementException("No such representative with value '" + r + "'");
     }
 
     Representative<R, E> curr = representatives.get(r);

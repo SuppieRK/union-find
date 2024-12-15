@@ -122,13 +122,13 @@ But Blueberry belongs to the set 'b' of size 1
 <dependency>
     <groupId>io.github.suppierk</groupId>
     <artifactId>union-find</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
 - Gradle
 ```groovy
-implementation 'io.github.suppierk:union-find:1.0.1'
+implementation 'io.github.suppierk:union-find:1.1.0'
 ```
 
 ## Useful reading
