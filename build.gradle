@@ -8,7 +8,7 @@ plugins {
     id 'eclipse'
 
     id 'info.solidsoft.pitest' version '1.15.0'
-    id 'me.champeau.jmh' version '0.7.2'
+    id 'me.champeau.jmh' version '0.7.3'
 
     // Publishing
     id 'com.vanniktech.maven.publish' version '0.30.0'
