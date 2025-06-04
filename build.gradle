@@ -16,7 +16,7 @@ plugins {
     // Utility
     id 'jacoco'
     id 'org.sonarqube' version '6.2.0.5505'
-    id 'com.diffplug.spotless' version '7.0.3'
+    id 'com.diffplug.spotless' version '7.0.4'
 }
 
 // Project properties
@@ -53,15 +53,15 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.12.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.13.0'
 }
 
-task sourceJar(type: Jar, dependsOn: classes) {
+tasks.register('sourceJar', Jar){dependsOn classes
     archiveClassifier.set('sources')
     from sourceSets.main.allSource
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
+tasks.register('javadocJar', Jar){dependsOn javadoc
     archiveClassifier.set('javadoc')
     from javadoc.destinationDir
 }
