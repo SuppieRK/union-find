@@ -190,12 +190,52 @@ public class HashUnionFindSet<R, E> extends AbstractSet<E>
     try {
       HashUnionFindSet<R, E> newSet = (HashUnionFindSet<R, E>) super.clone();
       newSet.representativeRetriever = representativeRetriever;
-      newSet.representatives = (HashMap<R, Representative<R, E>>) representatives.clone();
-      newSet.map = (HashMap<E, Representative<R, E>>) map.clone();
+
+      Map<Representative<R, E>, Representative<R, E>> cache = new IdentityHashMap<>();
+
+      newSet.representatives = new HashMap<>(representatives.size());
+      for (Map.Entry<R, Representative<R, E>> entry : representatives.entrySet()) {
+        Representative<R, E> copiedRepresentative = copyRepresentative(entry.getValue(), cache);
+        newSet.representatives.put(entry.getKey(), copiedRepresentative);
+      }
+
+      newSet.map = new HashMap<>(map.size());
+      for (Map.Entry<E, Representative<R, E>> entry : map.entrySet()) {
+        Representative<R, E> representative = cache.get(entry.getValue());
+        if (representative == null) {
+          representative = copyRepresentative(entry.getValue(), cache);
+        }
+        newSet.map.put(entry.getKey(), representative);
+      }
+
       return newSet;
     } catch (CloneNotSupportedException e) {
       throw new InternalError(e);
     }
+  }
+
+  private Representative<R, E> copyRepresentative(
+      Representative<R, E> original, Map<Representative<R, E>, Representative<R, E>> cache) {
+    Representative<R, E> existing = cache.get(original);
+    if (existing != null) {
+      return existing;
+    }
+
+    Representative<R, E> copy = new Representative<>(original.value);
+    copy.disjointSetValues.addAll(original.disjointSetValues);
+    cache.put(original, copy);
+
+    for (Map.Entry<R, Representative<R, E>> childEntry : original.disjointSetChildren.entrySet()) {
+      Representative<R, E> childCopy = copyRepresentative(childEntry.getValue(), cache);
+      childCopy.disjointSetParent = copy;
+      copy.disjointSetChildren.put(childEntry.getKey(), childCopy);
+    }
+
+    if (original.disjointSetParent != null) {
+      copy.disjointSetParent = copyRepresentative(original.disjointSetParent, cache);
+    }
+
+    return copy;
   }
 
   /** {@inheritDoc} */
@@ -340,42 +380,37 @@ public class HashUnionFindSet<R, E> extends AbstractSet<E>
     // 2. Remove it, prettify the state - my choice.
     final Representative<R, E> disjointSetParent = representative.disjointSetParent;
 
-    if (disjointSetParent == null && !representative.disjointSetChildren.isEmpty()) {
-      // A representative was a potential root, and it had other children - make first available
-      // children a new root
-      Representative<R, E> newRoot = representative.disjointSetChildren.values().iterator().next();
-      newRoot.disjointSetParent = null;
+    if (disjointSetParent == null) {
+      if (!representative.disjointSetChildren.isEmpty()) {
+        Iterator<Map.Entry<R, Representative<R, E>>> iterator =
+            representative.disjointSetChildren.entrySet().iterator();
+        Map.Entry<R, Representative<R, E>> firstChildEntry = iterator.next();
+        Representative<R, E> newRoot = firstChildEntry.getValue();
+        newRoot.disjointSetParent = null;
 
-      for (Representative<R, E> child : representative.disjointSetChildren.values()) {
-        if (!newRoot.value.equals(child.value)) {
-          child.disjointSetParent = newRoot;
+        while (iterator.hasNext()) {
+          Map.Entry<R, Representative<R, E>> siblingEntry = iterator.next();
+          Representative<R, E> sibling = siblingEntry.getValue();
+          sibling.disjointSetParent = newRoot;
+          newRoot.disjointSetChildren.put(siblingEntry.getKey(), sibling);
         }
+
+        representatives.put(newRoot.value, newRoot);
       }
-
-      // Adding new root to the representative map
-      representatives.put(newRoot.value, newRoot);
-
-      // Cleaning up current representative
-      representative.disjointSetChildren.clear();
-    } else if (disjointSetParent != null && representative.disjointSetChildren.isEmpty()) {
-      // A representative was NOT a potential root, and it had no other children - can be safely
-      // removed, keeping parent in mind
-      representative.disjointSetParent.disjointSetChildren.remove(representative.value);
+    } else if (representative.disjointSetChildren.isEmpty()) {
+      disjointSetParent.disjointSetChildren.remove(representative.value);
       representative.disjointSetParent = null;
-    } else if (disjointSetParent != null) {
-      // A representative was NOT a potential root, and it had other children - move those children
-      // under current representative parent
-      disjointSetParent.disjointSetChildren.putAll(representative.disjointSetChildren);
-
-      for (Representative<R, E> child : representative.disjointSetChildren.values()) {
+    } else {
+      for (Map.Entry<R, Representative<R, E>> childEntry :
+          representative.disjointSetChildren.entrySet()) {
+        Representative<R, E> child = childEntry.getValue();
         child.disjointSetParent = disjointSetParent;
+        disjointSetParent.disjointSetChildren.put(childEntry.getKey(), child);
       }
-
-      // Cleaning up current representative
       representative.disjointSetParent = null;
-      representative.disjointSetChildren.clear();
     }
 
+    representative.disjointSetChildren.clear();
     incrementModCount();
   }
 

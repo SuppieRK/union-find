@@ -2,9 +2,13 @@
 
 This dependency-less library serves for one simple purpose: provide an implementation of a data structure with Union-Find algorithm capabilities.
 
+[![Build status](https://github.com/SuppieRK/union-find/actions/workflows/build.yml/badge.svg)](https://github.com/SuppieRK/union-find/actions/workflows/build.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.suppierk/union-find.svg)](https://search.maven.org/artifact/io.github.suppierk/union-find)
+[![Javadoc](https://javadoc.io/badge2/io.github.suppierk/union-find/javadoc.svg)](https://javadoc.io/doc/io.github.suppierk/union-find)
+[![SonarCloud Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=SuppieRK_union-find&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=SuppieRK_union-find)
+[![SonarCloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=SuppieRK_union-find&metric=coverage)](https://sonarcloud.io/summary/new_code?id=SuppieRK_union-find)
+[![SonarCloud Maintainability](https://sonarcloud.io/api/project_badges/measure?project=SuppieRK_union-find&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=SuppieRK_union-find)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSuppieRK%2Funion-find.svg?type=shield&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2FSuppieRK%2Funion-find?ref=badge_shield&issueType=license)
-
-[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-orange.svg)](https://sonarcloud.io/summary/overall?id=SuppieRK_union-find)
 
 ## Where can this be useful?
 
@@ -122,13 +126,13 @@ But Blueberry belongs to the set 'b' of size 1
 <dependency>
     <groupId>io.github.suppierk</groupId>
     <artifactId>union-find</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
 </dependency>
 ```
 
 - Gradle
 ```groovy
-implementation 'io.github.suppierk:union-find:2.0.0'
+implementation("io.github.suppierk:union-find:2.0.1")
 ```
 
 ## Useful reading

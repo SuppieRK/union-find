@@ -327,6 +327,33 @@ class HashUnionFindSetTest {
   }
 
   @Test
+  void remove_rootRepresentativeWithMultipleChildren() {
+    HashUnionFindSet<Integer, Integer> hufs = new HashUnionFindSet<>(Function.identity());
+    hufs.add(1);
+    hufs.add(2);
+    hufs.add(3);
+
+    hufs.union(1, 2);
+    hufs.union(1, 3);
+
+    assertEquals(
+        Set.of(1, 2, 3),
+        hufs.elementSet(1),
+        "All elements should belong to the same set before removal");
+
+    assertTrue(hufs.remove(1), "Removing existing root must succeed");
+
+    Integer newRepresentative = hufs.find(2);
+    assertEquals(1, hufs.numberOfSets(), "Remaining elements must stay connected");
+    assertEquals(
+        Set.of(2, 3),
+        hufs.representativeSet(newRepresentative),
+        "Removing the root must not disconnect existing children");
+    assertEquals(2, hufs.representativeSetSize(newRepresentative));
+    assertTrue(hufs.connected(2, 3), "Remaining elements must remain connected");
+  }
+
+  @Test
   void remove_middleRepresentative() {
     HashUnionFindSet<Integer, Integer> hufs = new HashUnionFindSet<>(Function.identity());
 
@@ -605,11 +632,29 @@ class HashUnionFindSetTest {
         hufs.representativeRetriever,
         clonedHufs.representativeRetriever,
         "After clone function must remain the same");
-    assertEquals(hufs.map, clonedHufs.map, "After clone maps must be equal");
+    assertEquals(hufs.map.keySet(), clonedHufs.map.keySet(), "After clone map keys should match");
     assertEquals(
-        hufs.representatives,
-        clonedHufs.representatives,
-        "After clone representative maps must be equal");
+        hufs.representatives.keySet(),
+        clonedHufs.representatives.keySet(),
+        "After clone representative keys should match");
+
+    for (Integer value : hufs.map.keySet()) {
+      HashUnionFindSet.Representative<Integer, Integer> originalRep = hufs.map.get(value);
+      HashUnionFindSet.Representative<Integer, Integer> clonedRep = clonedHufs.map.get(value);
+
+      assertNotSame(originalRep, clonedRep, "Representative instances must be distinct");
+      assertEquals(
+          originalRep.value,
+          clonedRep.value,
+          "Representative value must be preserved during cloning");
+      assertEquals(
+          originalRep.disjointSetValues,
+          clonedRep.disjointSetValues,
+          "Representative members must be preserved during cloning");
+    }
+
+    assertTrue(clonedHufs.remove(1), "Clone should allow independent mutations");
+    assertTrue(hufs.contains(1), "Original instance must not be affected by clone mutation");
   }
 
   @Test
